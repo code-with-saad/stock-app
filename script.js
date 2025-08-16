@@ -50,15 +50,17 @@ let remainingStockDisplay = document.getElementById("remainingStock");
 
 let currentProduct = "";
 
-// Load product data when selection changes
-productSelect.addEventListener("change", () => {
-  currentProduct = productSelect.value;
+
+$("#product").on("change", function () {
+  currentProduct = $(this).val();  // Select2 ke liye jQuery se value lena hoga
   if (currentProduct) {
     loadProductData();
   } else {
     updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
   }
 });
+
+
 
 // Add debit
 debitField.addEventListener("change", () => {
@@ -121,27 +123,6 @@ function updateDisplay(data) {
   remainingStockDisplay.innerText = `Remaining Stock: ${remainingStock}`;
 }
 
-// Clear All
-// function clearDisplay() {
-//   if (!currentProduct) {
-//       alert("Select a product first");
-//       return
-//     } else {
-//         document.getElementById("clearAll").addEventListener("click", () => {
-//           const confirmClear = confirm(
-//             "Are you sure you want to clear all stock records?"
-//           );
-//           if (confirmClear) {
-//             stockData = []; // clear everything
-//             localStorage.removeItem(`stock_${currentProduct}`);
-//           //   localStorage.removeItem("stockData");
-//           updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
-//           //   renderTable();
-//           //   updateTotals();
-//           }
-//         });
-//     } 
-// }
 
 
 function clearDisplay() {

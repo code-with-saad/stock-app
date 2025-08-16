@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="style.css">
     <meta name="theme-color" content="#2d2d2d">
 </head>
-<body style="background-color: rgb(45, 45, 45); color: white;">
+<body style="background-color: rgb(45, 45, 45);">
 
 <div class="container py-4">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h2 class="mb-4">Stock Management</h2>
+    <h2 class="mb-4 text-white">Stock Management</h2>
     <button id="rawMaterialBtn" onclick="location.href='raw.html'">Raw Material</button>
   </div>
 
@@ -36,7 +36,6 @@
             <option value="karachinimco">Karachi Nimco</option>
             <option value="karachimood">Karachi Moodd</option>
             <option value="karachichana">Karachi Chana</option>
-            <!-- <option value="karachichana">Karachi Chana</option> -->
         </select>
         <br><br>
 
@@ -47,7 +46,7 @@
         <input type="number" placeholder="Enter Credit" id="credit" class="form-control mb-3">
 
         <!-- Stock Information -->
-        <div class="mt-4">
+        <div class="mt-4 text-white">
             <p id="totalStock">Total Stock: 0 
                 <button type="button" class="btn btn-sm btn-warning" onclick="editValue('debit')">Edit</button>
             </p>
