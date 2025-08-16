@@ -5,11 +5,9 @@
 // let credititem2 = document.getElementById('credititem2')
 // let credititem3 = document.getElementById('credititem3')
 
-
 // let showbalance1  = document.getElementById('balance1');
 // let showbalance2  = document.getElementById('balance2');
 // let showbalance3  = document.getElementById('balance3');
-
 
 // function displayBalance(){
 //     let balance1 = debititem1.value - credititem1.value
@@ -29,9 +27,6 @@
 //     }
 // }
 
-
-
-
 // let debit = document.getElementById('debit');
 // let credit = document.getElementById('credit');
 
@@ -40,159 +35,191 @@
 // function displayBalance() {
 //     showBalance = debit.value - credit.value;
 //     console.log(showBalance);
-    
 
 //     balance.innerHTML = showBalance
 
 // }
 
+let productSelect = document.getElementById("product");
+let debitField = document.getElementById("debit");
+let creditField = document.getElementById("credit");
 
-
-
-let productSelect = document.getElementById('product');
-let debitField = document.getElementById('debit');
-let creditField = document.getElementById('credit');
-
-let totalStockDisplay = document.getElementById('totalStock');
-let stockUsedDisplay = document.getElementById('stockUsed');
-let remainingStockDisplay = document.getElementById('remainingStock');
+let totalStockDisplay = document.getElementById("totalStock");
+let stockUsedDisplay = document.getElementById("stockUsed");
+let remainingStockDisplay = document.getElementById("remainingStock");
 
 let currentProduct = "";
 
 // Load product data when selection changes
-productSelect.addEventListener('change', () => {
-    currentProduct = productSelect.value;
-    if (currentProduct) {
-        loadProductData();
-    } else {
-        updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
-    }
+productSelect.addEventListener("change", () => {
+  currentProduct = productSelect.value;
+  if (currentProduct) {
+    loadProductData();
+  } else {
+    updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
+  }
 });
 
 // Add debit
-debitField.addEventListener('change', () => {
-    if (!currentProduct) return alert("Please select a product first");
+debitField.addEventListener("change", () => {
+  if (!currentProduct) return alert("Please select a product first");
 
-    let newDebit = parseFloat(debitField.value) || 0;
-    let productData = getProductData();
+  let newDebit = parseFloat(debitField.value) || 0;
+  let productData = getProductData();
 
-    productData.totalDebit += newDebit;
-    productData.history.push({ type: "debit", amount: newDebit }); // save action
+  productData.totalDebit += newDebit;
+  productData.history.push({ type: "debit", amount: newDebit }); // save action
 
-    saveProductData(productData);
-    updateDisplay(productData);
+  saveProductData(productData);
+  updateDisplay(productData);
 
-    debitField.value = '';
+  debitField.value = "";
 });
 
 // Add credit
-creditField.addEventListener('change', () => {
-    if (!currentProduct) return alert("Please select a product first");
+creditField.addEventListener("change", () => {
+  if (!currentProduct) return alert("Please select a product first");
 
-    let newCredit = parseFloat(creditField.value) || 0;
-    let productData = getProductData();
+  let newCredit = parseFloat(creditField.value) || 0;
+  let productData = getProductData();
 
-    productData.totalCredit += newCredit;
-    productData.history.push({ type: "credit", amount: newCredit }); // save action
+  productData.totalCredit += newCredit;
+  productData.history.push({ type: "credit", amount: newCredit }); // save action
 
-    saveProductData(productData);
-    updateDisplay(productData);
+  saveProductData(productData);
+  updateDisplay(productData);
 
-    creditField.value = '';
+  creditField.value = "";
 });
 
 // Get product data from localStorage
 function getProductData() {
-    let data = localStorage.getItem(`stock_${currentProduct}`);
-    return data ? JSON.parse(data) : { totalDebit: 0, totalCredit: 0, history: [] };
+  let data = localStorage.getItem(`stock_${currentProduct}`);
+  return data
+    ? JSON.parse(data)
+    : { totalDebit: 0, totalCredit: 0, history: [] };
 }
 
 // Save product data to localStorage
 function saveProductData(data) {
-    localStorage.setItem(`stock_${currentProduct}`, JSON.stringify(data));
+  localStorage.setItem(`stock_${currentProduct}`, JSON.stringify(data));
 }
 
 // Load data for selected product
 function loadProductData() {
-    let productData = getProductData();
-    updateDisplay(productData);
+  let productData = getProductData();
+  updateDisplay(productData);
 }
 
 // Update HTML display
 function updateDisplay(data) {
-    let remainingStock = data.totalDebit - data.totalCredit;
-    totalStockDisplay.innerHTML = `Total Stock: ${data.totalDebit} 
+  let remainingStock = data.totalDebit - data.totalCredit;
+  totalStockDisplay.innerHTML = `Total Stock: ${data.totalDebit} 
         <button type="button" class="btn btn-sm btn-warning" onclick="editValue('debit')">Edit</button>`;
-    stockUsedDisplay.innerHTML = `Stock Used: ${data.totalCredit} 
+  stockUsedDisplay.innerHTML = `Stock Used: ${data.totalCredit} 
         <button type="button" class="btn btn-sm btn-warning" onclick="editValue('credit')">Edit</button>`;
-    remainingStockDisplay.innerText = `Remaining Stock: ${remainingStock}`;
+  remainingStockDisplay.innerText = `Remaining Stock: ${remainingStock}`;
 }
 
 // Clear All
-function clearDisplay() {
-    if (!currentProduct) return alert("Select a product first");
+// function clearDisplay() {
+//   if (!currentProduct) {
+//       alert("Select a product first");
+//       return
+//     } else {
+//         document.getElementById("clearAll").addEventListener("click", () => {
+//           const confirmClear = confirm(
+//             "Are you sure you want to clear all stock records?"
+//           );
+//           if (confirmClear) {
+//             stockData = []; // clear everything
+//             localStorage.removeItem(`stock_${currentProduct}`);
+//           //   localStorage.removeItem("stockData");
+//           updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
+//           //   renderTable();
+//           //   updateTotals();
+//           }
+//         });
+//     } 
+// }
 
-    localStorage.removeItem(`stock_${currentProduct}`);
-    updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
+
+function clearDisplay() {
+  if (!currentProduct) {
+    alert("Select a product first");
+    return; // yahan hi ruk jao
+  }
+  const savedData = JSON.parse(localStorage.getItem(`stock_${currentProduct}`)) || [];
+
+
+  if (savedData.length === 0) {
+    alert(`No records to clear for ${currentProduct}`)
+    return
 }
+
+
+  const confirmClear = confirm(
+    `Are you sure you want to clear all stock records for ${currentProduct}?`
+  );
+
+        if (confirmClear) {
+            stockData = []; // current product ka data clear
+            localStorage.removeItem(`stock_${currentProduct}`); // sirf us product ka data remove
+            updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
+        }   
+}
+
 
 // Undo Last Action
 function undoLastAction() {
-    if (!currentProduct) return alert("Select a product first");
+  if (!currentProduct) return alert("Select a product first");
 
-    let productData = getProductData();
-    if (!productData.history || productData.history.length === 0) {
-        return alert("No actions to undo");
-    }
+  let productData = getProductData();
+  if (!productData.history || productData.history.length === 0) {
+    return alert("No actions to undo");
+  }
 
-    let lastAction = productData.history.pop();
-    if (lastAction.type === "debit") {
-        productData.totalDebit -= lastAction.amount;
-    } else if (lastAction.type === "credit") {
-        productData.totalCredit -= lastAction.amount;
-    }
+  let lastAction = productData.history.pop();
+  if (lastAction.type === "debit") {
+    productData.totalDebit -= lastAction.amount;
+  } else if (lastAction.type === "credit") {
+    productData.totalCredit -= lastAction.amount;
+  }
 
-    saveProductData(productData);
-    updateDisplay(productData);
+  saveProductData(productData);
+  updateDisplay(productData);
 }
 
 // Edit Total Stock or Stock Used
 function editValue(type) {
-    if (!currentProduct) return alert("Select a product first");
+  if (!currentProduct) return alert("Select a product first");
 
-    let productData = getProductData();
-    let currentValue = type === "debit" ? productData.totalDebit : productData.totalCredit;
+  let productData = getProductData();
+  let currentValue =
+    type === "debit" ? productData.totalDebit : productData.totalCredit;
 
-    let newValue = parseFloat(prompt(`Enter new value for ${type === "debit" ? "Total Stock" : "Stock Used"}:`, currentValue));
-    if (isNaN(newValue) || newValue < 0) {
-        return alert("Invalid value");
-    }
+  let newValue = parseFloat(
+    prompt(
+      `Enter new value for ${type === "debit" ? "Total Stock" : "Stock Used"}:`,
+      currentValue
+    )
+  );
+  if (isNaN(newValue) || newValue < 0) {
+    return alert("Invalid value");
+  }
 
-    // Save history of change for undo
-    let diff = newValue - currentValue;
-    if (diff !== 0) {
-        productData.history.push({ type: type, amount: diff });
-    }
+  // Save history of change for undo
+  let diff = newValue - currentValue;
+  if (diff !== 0) {
+    productData.history.push({ type: type, amount: diff });
+  }
 
-    if (type === "debit") {
-        productData.totalDebit = newValue;
-    } else if (type === "credit") {
-        productData.totalCredit = newValue;
-    }
+  if (type === "debit") {
+    productData.totalDebit = newValue;
+  } else if (type === "credit") {
+    productData.totalCredit = newValue;
+  }
 
-    saveProductData(productData);
-    updateDisplay(productData);
+  saveProductData(productData);
+  updateDisplay(productData);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

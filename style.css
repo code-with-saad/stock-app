@@ -1,0 +1,13 @@
+#stockBtn, #rawMaterialBtn {
+  padding: 8px 15px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+#stockBtn:hover, #rawMaterialBtn:hover {
+  background-color: #0056b3;
+}
