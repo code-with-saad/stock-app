@@ -12,14 +12,25 @@ let remainingStockDisplay = document.getElementById("remainingStock");
 let currentProduct = "";
 
 // product change
-productSelect.addEventListener("change", () => {
-  currentProduct = productSelect.value;
+// productSelect.addEventListener("change", () => {
+//   currentProduct = productSelect.value;
+//   if (currentProduct) {
+//     loadProductData();
+//   } else {
+//     updateDisplay({ store: 0, depart: 0, used: 0, history: [] });
+//   }
+// });
+
+$("#product").on("change", function () {
+  currentProduct = $(this).val();  // Select2 ke liye jQuery se value lena hoga
   if (currentProduct) {
     loadProductData();
   } else {
     updateDisplay({ store: 0, depart: 0, used: 0, history: [] });
   }
 });
+
+
 
 // add debit in store
 debitStoreField.addEventListener("change", () => {
