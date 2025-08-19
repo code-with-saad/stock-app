@@ -1,14 +1,26 @@
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open('stock-app-v1').then(cache => {
+    caches.open('stock-app-v2').then(cache => {
       return cache.addAll([
         './',
         './index.html',
-        './script.js',
+        './raw.html',
+        './assets/js/script.js',
+        './assets/js/raw.js',
         './manifest.json',
         './icon-192.png',
         './icon-512.png'
       ]);
+    })
+  );
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== 'stock-app-v2').map(key => caches.delete(key))
+      );
     })
   );
 });
