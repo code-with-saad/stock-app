@@ -50,15 +50,15 @@ let remainingStockDisplay = document.getElementById("remainingStock");
 
 let currentProduct = "";
 
-
-$("#product").on("change", function () {
-  currentProduct = $(this).val();  // Select2 ke liye jQuery se value lena hoga
+productSelect.addEventListener("change", () => {
+  currentProduct = productSelect.value;
   if (currentProduct) {
     loadProductData();
   } else {
-    updateDisplay({ totalDebit: 0, totalCredit: 0, history: [] });
+    updateDisplay({ store: 0, depart: 0, used: 0, history: [] });
   }
 });
+
 
 
 

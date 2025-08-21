@@ -1,9 +1,8 @@
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open('stock-app-v2').then(cache => {
+    caches.open('stock-app-v3').then(cache => {
       return cache.addAll([
         './',
-        './index.html',
         './raw.html',
         './assets/js/script.js',
         './assets/js/raw.js',
@@ -19,7 +18,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys.filter(key => key !== 'stock-app-v2').map(key => caches.delete(key))
+        keys.filter(key => key !== 'stock-app-v3').map(key => caches.delete(key))
       );
     })
   );
@@ -27,6 +26,13 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(response => response || fetch(e.request))
+    fetch(e.request).then(res => {
+      const resClone = res.clone();
+      caches.open('stock-app-v3').then(cache => {
+        cache.put(e.request, resClone);
+      });
+      return res;
+    }).catch(() => caches.match(e.request))
   );
 });
+
